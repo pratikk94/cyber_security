@@ -6,7 +6,7 @@ const Receiver: React.FC = () => {
 
   useEffect(() => {
     const fetchAudio = async () => {
-      const response = await fetch("https://cyber-secuirty-frontend.vercel.app/audio_stream");
+      const response = await fetch("https://cyber-security-pi.vercel.app/audio_stream");
       const audioStream = response.body;
 
       if (audioStream && audioRef.current) {

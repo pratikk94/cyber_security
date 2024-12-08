@@ -24,7 +24,7 @@ const Sender: React.FC = () => {
       const audioData = event.inputBuffer.getChannelData(0);
       const audioBlob = new Blob([audioData], { type: "audio/wav" });
 
-      await fetch("https://cyber-secuirty-frontend.vercel.app/audio_stream", {
+      await fetch("https://cyber-security-pi.vercel.app/audio_stream", {
         method: "POST",
         headers: { "Content-Type": "audio/wav" },
         body: audioBlob,
@@ -36,7 +36,7 @@ const Sender: React.FC = () => {
     const offer = await peerConnectionRef.current.createOffer();
     await peerConnectionRef.current.setLocalDescription(offer);
 
-    await fetch("https://cyber-secuirty-frontend.vercel.app/offer", {
+    await fetch("https://cyber-security-pi.vercel.app/offer", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(offer),
