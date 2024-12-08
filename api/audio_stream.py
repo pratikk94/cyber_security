@@ -3,8 +3,9 @@ from flask_cors import CORS
 import io
 
 app = Flask(__name__)
-# Enable CORS for all routes, restrict origins if needed
-CORS(app, resources={r"/*": {"origins": "*"}})
+
+# Configure CORS to allow specific origins
+CORS(app, resources={r"/*": {"origins": ["https://cyber-security-pi.vercel.app"]}})
 
 # In-memory storage for signaling and audio data
 signaling_data = {
@@ -13,6 +14,7 @@ signaling_data = {
     "ice_candidates": [],
 }
 audio_stream_data = io.BytesIO()
+
 
 @app.route("/offer", methods=["POST", "GET"])
 def offer():
@@ -26,6 +28,7 @@ def offer():
     elif request.method == "GET":
         return jsonify(signaling_data["offer"])
 
+
 @app.route("/answer", methods=["POST", "GET"])
 def answer():
     """
@@ -38,6 +41,7 @@ def answer():
     elif request.method == "GET":
         return jsonify(signaling_data["answer"])
 
+
 @app.route("/ice-candidates", methods=["POST", "GET"])
 def ice_candidates():
     """
@@ -49,6 +53,7 @@ def ice_candidates():
         return jsonify({"status": "ICE candidate stored"})
     elif request.method == "GET":
         return jsonify(signaling_data["ice_candidates"])
+
 
 @app.route("/audio_stream", methods=["POST", "GET"])
 def audio_stream():
@@ -73,7 +78,9 @@ def audio_stream():
                 if not chunk:
                     break
                 yield chunk
+
         return Response(generate_audio(), content_type="audio/wav")
+
 
 @app.route("/reset", methods=["POST"])
 def reset():
@@ -88,6 +95,7 @@ def reset():
     }
     audio_stream_data = io.BytesIO()
     return jsonify({"status": "Signaling and audio data reset"})
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
